@@ -14,7 +14,7 @@ cd <catkin_workspace/build>
 make
 cd ..
 roscore (in terminal 1)
-rosrun beginner_tutorial talker (in terminal 2)
-rosrun beginner_tutorial listener (in terminal 3)
+rosrun beginner_tutorials talker (in terminal 2)
+rosrun beginner_tutorials listener (in terminal 3)
 
 ```
