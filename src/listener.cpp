@@ -1,58 +1,41 @@
-/*Copyright (C) 2019 Shivam AKhauri
-*/
-#include "ros/ros.h"
-#include "std_msgs/String.h"
-
-/**
- * This tutorial demonstrates simple receipt of messages over the ROS system.
- */
-void chatterCallback(const std_msgs::String::ConstPtr& msg) {
-  ROS_INFO("I heard: [%s]", msg->data.c_str());
-}
+#include <ros/ros.h>
+#include <beginner_tutorials/exampleServiceMessage.h> // this message type is defined in the current package
+#include <iostream>
+#include <string>
+using namespace std;
 
 int main(int argc, char **argv) {
-  /**
-   * The ros::init() function needs to see argc and argv so that it can perform
-   * any ROS arguments and name remapping that were provided at the command line.
-   * For programmatic remappings you can use a different version of init() which takes
-   * remappings directly, but for most command-line programs, passing argc and argv is
-   * the easiest way to do it.  The third argument to init() is the name of the node.
-   *
-   * You must call one of the versions of ros::init() before using any other
-   * part of the ROS system.
-   */
-  ros::init(argc, argv, "listener");
+    ros::init(argc, argv, "beginner_tutorials");
+    ros::NodeHandle n;
+    ros::ServiceClient client = n.serviceClient<beginner_tutorials::exampleServiceMessage>("lookup_by_subject_code");
+    beginner_tutorials::exampleServiceMessage srv;
+    bool found_on_list = false;
+    string subject_code;
+    while (ros::ok()) {
+        cout<<endl;
+        cout << "enter a subject code (x to quit): ";
+        cin>>subject_code;
+        if (subject_code.compare("x")==0)
+            cout<< "exit with X";
+            return 0;
+        //cout<<"you entered "<<in_name<<endl;
+        srv.request.subject = subject_code; //"ENPM808X";
+        if (client.call(srv)) {
+            if (srv.response.onList) {
+                cout << srv.request.subject << " is known as " << srv.response.subjectName << endl;
+                cout << "It is" << srv.response.credits << " credits associated" << endl;
+                if (srv.response.roboticsCourse)
+                    cout << "This subject is a Robotics engineering course" << endl;
+                else
+                    cout << "This subject is a CMSC course. Not a ENPM course" << endl;
+            } else {
+                cout << srv.request.subject << " is not in my subject list databse. Current database has info on ENPM808X, ENPM662, CMSC 440." << endl;
+            }
 
-  /**
-   * NodeHandle is the main access point to communications with the ROS system.
-   * The first NodeHandle constructed will fully initialize this node, and the last
-   * NodeHandle destructed will close down the node.
-   */
-  ros::NodeHandle n;
-
-  /**
-   * The subscribe() call is how you tell ROS that you want to receive messages
-   * on a given topic.  This invokes a call to the ROS
-   * master node, which keeps a registry of who is publishing and who
-   * is subscribing.  Messages are passed to a callback function, here
-   * called chatterCallback.  subscribe() returns a Subscriber object that you
-   * must hold on to until you want to unsubscribe.  When all copies of the Subscriber
-   * object go out of scope, this callback will automatically be unsubscribed from
-   * this topic.
-   *
-   * The second parameter to the subscribe() function is the size of the message
-   * queue.  If messages are arriving faster than they are being processed, this
-   * is the number of messages that will be buffered up before beginning to throw
-   * away the oldest ones.
-   */
-  ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
-
-  /**
-   * ros::spin() will enter a loop, pumping callbacks.  With this version, all
-   * callbacks will be called from within this thread (the main one).  ros::spin()
-   * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
-   */
-  ros::spin();
-  return 0;
+        } else {
+            ROS_ERROR("Failed to call service lookup_by_subject_code.");
+            return 1;
+        }
+    }
+    return 0;
 }
-
