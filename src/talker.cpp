@@ -1,22 +1,39 @@
-//example ROS service:
-// run this as: rosrun example_ROS_service example_ROS_service
-// in another window, tickle it manually with (e.g.): 
-//    rosservice call lookup_by_name 'Ted'
-
+/**
+* @file talker.cpp
+* @author Shivam Akhauri 
+* @date 31 October 2019
+* @copyright 2019 Shivam Akhauri
+* @brief Contains the service to check for the details of a subject 
+* in the subject database of University of Maryland
+*/
 
 #include <ros/ros.h>
 #include <beginner_tutorials/exampleServiceMessage.h>
 #include <iostream>
 #include <string>
-using namespace std;
 
+
+/**
+* @brief function to provide the service to check 
+* for a subject from the subject database. It returns the subject name,
+* Number of credits associated with the subject, if the suject is robotics
+* subject or CMSC subject.
+* The client sends the request to this service in form of a subject code
+* The service analyses the request to check if it is in the database
+* @params beginner_tutorials :: exampleServiceMessageRequest& request 
+* <generated in the exampleServiceMessage.h in devel/include 
+* upon adding .srv to the package 
+* @params beginner_tutorials :: exampleServiceMessageResponse& response
+* <generated in the exampleServiceMessage.h in devel/include 
+* upon adding .srv to the package 
+* @return bool: if the service responses
+*/
 bool callback(beginner_tutorials :: exampleServiceMessageRequest& request, beginner_tutorials :: exampleServiceMessageResponse& response) {
   ROS_INFO("callback activated");
-  //let's convert this to a C++-class string, so can use member funcs
-  string in_name(request.subject); 
-  //cout<<"in_name:"<<in_name<<endl;
+  // convert the client data to a C++-class string, to use member funcs
+  std::string in_name(request.subject); 
   response.onList=false;
-  // access a small database..
+  // create a small database.
   if (in_name.compare("ENPM808X") == 0) {
     ROS_INFO("asked about 808X");
     response.credits = 3;
@@ -44,9 +61,14 @@ bool callback(beginner_tutorials :: exampleServiceMessageRequest& request, begin
   return true;
 }
 
+
+/**
+* @brief main function. creates a service node
+* creates a service and advertises it over ROS
+*/
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "beginner_tutorials");
+  ros::init(argc, argv, "beginner_tutorials_server");
   ros::NodeHandle n;
 
   ros::ServiceServer service = n.advertiseService("lookup_by_subject_code", callback);
