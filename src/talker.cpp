@@ -73,6 +73,12 @@ int main(int argc, char **argv)
 
   ros::ServiceServer service = n.advertiseService("lookup_by_subject_code", callback);
   ROS_INFO("Ready to check databse for the subjects");
+  int rate = 10;
+  if (argv[1]=="slow") {
+    rate = 20;
+  }
+  ros::Rate loop_rate(rate);
+  loop_rate.sleep();
   ros::spin();
 
   return 0;
