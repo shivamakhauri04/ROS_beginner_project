@@ -1,4 +1,24 @@
 /**
+Copyright [MIT] 2019 Shivam Akhauri
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ the Software, and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+/**
 * @file talker.cpp
 * @author Shivam Akhauri 
 * @date 31 October 2019
@@ -35,7 +55,7 @@ bool callback(beginner_tutorials :: exampleServiceMessageRequest& request, begin
   response.onList=false;
   // create a small database.
   if (in_name.compare("ENPM808X") == 0) {
-    ROS_INFO("asked about 808X");
+    ROS_INFO_STREAM("asked about 808X");
     response.credits = 3;
     response.roboticsCourse = true;
     response.onList=true;
@@ -43,7 +63,7 @@ bool callback(beginner_tutorials :: exampleServiceMessageRequest& request, begin
   } 
 
   if (in_name.compare("ENPM662") == 0) {
-    ROS_INFO("asked about Robot Modelling");
+    ROS_INFO_STREAM("asked about Robot Modelling");
     response.credits = 3;
     response.roboticsCourse = true;
     response.onList = true;
@@ -51,7 +71,7 @@ bool callback(beginner_tutorials :: exampleServiceMessageRequest& request, begin
   }
 
   if (in_name.compare("CMSC440") == 0) {
-    ROS_INFO("asked about DataStructures");
+    ROS_INFO_STREAM("asked about DataStructures");
     response.credits = 2;
     response.roboticsCourse = false;
     response.onList = true;
@@ -70,13 +90,16 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "beginner_tutorials_server");
   ros::NodeHandle n;
-
+  if (!ros::isInitialized()) {
+    ROS_FATAL_STREAM("The Ros node for service not initialized");
+  }
+  ROS_DEBUG_STREAM("Ready to check database for the subjects");
   ros::ServiceServer service = n.advertiseService("lookup_by_subject_code", callback);
-  ROS_INFO("Ready to check databse for the subjects");
   int rate = 10;
   if (argv[1]=="slow") {
     rate = 20;
   }
+ 
   ros::Rate loop_rate(rate);
   loop_rate.sleep();
   ros::spin();
