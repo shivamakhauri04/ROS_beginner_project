@@ -48,26 +48,27 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 * upon adding .srv to the package 
 * @return bool: if the service responses
 */
-bool callback(beginner_tutorials :: exampleServiceMessageRequest& request, beginner_tutorials :: exampleServiceMessageResponse& response) {
+bool callback(beginner_tutorials :: exampleServiceMessageRequest& request,
+beginner_tutorials :: exampleServiceMessageResponse& response) {
   ROS_INFO("callback activated");
   // convert the client data to a C++-class string, to use member funcs
-  std::string in_name(request.subject); 
-  response.onList=false;
+  std::string in_name(request.subject);
+  response.onList = false;
   // create a small database.
   if (in_name.compare("ENPM808X") == 0) {
     ROS_INFO_STREAM("asked about 808X");
     response.credits = 3;
     response.roboticsCourse = true;
-    response.onList=true;
-    response.subjectName="Robotics SOftware Development";
-  } 
+    response.onList = true;
+    response.subjectName = "Robotics SOftware Development";
+  }
 
   if (in_name.compare("ENPM662") == 0) {
     ROS_INFO_STREAM("asked about Robot Modelling");
     response.credits = 3;
     response.roboticsCourse = true;
     response.onList = true;
-    response.subjectName="Robot Modelling";
+    response.subjectName = "Robot Modelling";
   }
 
   if (in_name.compare("CMSC440") == 0) {
@@ -76,30 +77,27 @@ bool callback(beginner_tutorials :: exampleServiceMessageRequest& request, begin
     response.roboticsCourse = false;
     response.onList = true;
     response.subjectName = "Datastructures and Algorithms";
-  }     
-
+  }
   return true;
 }
-
 
 /**
 * @brief main function. creates a service node
 * creates a service and advertises it over ROS
 */
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   ros::init(argc, argv, "beginner_tutorials_server");
   ros::NodeHandle n;
   if (!ros::isInitialized()) {
     ROS_FATAL_STREAM("The Ros node for service not initialized");
   }
   ROS_DEBUG_STREAM("Ready to check database for the subjects");
-  ros::ServiceServer service = n.advertiseService("lookup_by_subject_code", callback);
+  ros::ServiceServer service = n.advertiseService
+  ("lookup_by_subject_code", callback);
   int rate = 10;
-  if (argv[1]=="slow") {
+  if (argv[1] == "slow") {
     rate = 20;
   }
- 
   ros::Rate loop_rate(rate);
   loop_rate.sleep();
   ros::spin();

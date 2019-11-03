@@ -37,27 +37,28 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 * generates a call to the service 
 */
 int main(int argc, char **argv) {
-    // initialize the node. Necessary for ros program 
+    // initialize the node. Necessary for ros program
     ros::init(argc, argv, "beginner_tutorials_client");
-    // the main access point to communicate with ros systems. 
+    // the main access point to communicate with ros systems.
     // fully initializes the node
     ros::NodeHandle n;
     if (!ros::isInitialized()) {
         ROS_FATAL_STREAM("The Ros node for service not initialized");
     }
     // this creates the client
-    ros::ServiceClient client = n.serviceClient<beginner_tutorials::exampleServiceMessage>("lookup_by_subject_code");
-    beginner_tutorials::exampleServiceMessage srv;
+    ros::ServiceClient client = n.serviceClient<beginner_tutorials::
+    exampleServiceMessage>("lookup_by_subject_code");
+    beginner_tutorials :: exampleServiceMessage srv;
     std::string subject_code;
     while (ros::ok()) {
         // following print statements are for UI
-        std::cout<<std::endl;
+        std::cout << std::endl;
         std::cout << "Enter a subject code (x to quit): ";
-        ROS_INFO_STREAM("Note Current database has info on ENPM808X, ENPM662, CMSC440.");
+        ROS_INFO_STREAM("Note database has info on ENPM808X,ENPM662,CMSC440.");
         // Enter the subject code to lookup database
         std::cin >> subject_code;
         // If pressed 'x' exit
-        if (subject_code.compare("x")==0){
+        if (subject_code.compare("x") == 0) {
             ROS_WARN_STREAM("you did not enter any subject code.");
             return 0;
         }
@@ -67,19 +68,28 @@ int main(int argc, char **argv) {
         if (client.call(srv)) {
             // check for the responses and accordingly print the results
             if (srv.response.onList) {
-                std::cout << srv.request.subject << " is known as " << srv.response.subjectName << std::endl;
-                std::cout << " It has " << srv.response.credits << " credits associated" << std::endl;
+                std::cout << srv.request.subject << " is known as " <<
+                srv.response.subjectName << std::endl;
+                std::cout << " It has " << srv.response.credits <<
+                " credits associated" << std::endl;
                 if (srv.response.roboticsCourse)
-                    std::cout << " This subject is a Robotics engineering course" << std::endl;
+                    std::cout <<
+                    " This subject is a Robotics engineering course"
+                    << std::endl;
                 else
-                    std::cout << " This subject is a CMSC course. Not a ENPM course" << std::endl;
+                    std::cout <<
+                    " This subject is CMSC course. Not ENPM course"
+                    << std::endl;
             } else {
-                std::cout << srv.request.subject << " is not in my subject list databse. Current database has info on ENPM808X, ENPM662, CMSC 440. " << std::endl;
+                std::cout << srv.request.subject <<
+                " is not in my subject list databse."<<
+                "Current database has info on ENPM808X, ENPM662, CMSC 440. "
+                << std::endl;
             }
 
         } else {
             // if the service call fails
-            ROS_ERROR_STREAM(" Failed to call service lookup_by_subject_code. ");
+            ROS_ERROR_STREAM("Failed to call service lookup_by_subject_code.");
             return 1;
         }
     }
