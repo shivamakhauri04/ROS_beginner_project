@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/shivamakhauri04/beginner_tutorials/blob/master/LICENSE.txt)
+
 # ROS service to look up for a subject information from a subject database of the University of Maryland.
 
 ## Overview
@@ -37,4 +39,4 @@ Note : Curently the database has information about only 3 subjects: ENPM808X, EN
 ## Copyright
 
 Copyright (C) 2019 Shivam Akhauri
-For license information, see LICENSE.txt.
+For license information, see [LICENSE.txt](LICENSE.txt).
