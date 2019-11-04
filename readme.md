@@ -24,9 +24,12 @@ Note: The <argument> is "slow" for slower service rate or "fast" for faster serv
 -Enter "x" if you want to exit and press Ctrl+C to end roslaunch
 
 ```
+## Limitation:
+- Conflict with ROS and C++ 11 standard : The .srv files for the ros service automatically creates header files, which have template of accepting address by reference using the '&' operator. The cpplint requires this refernce to be made as "const" but the ros package doesn't accept "const" to be specified before the refernce. Hence this leads to cpplint errors to comply with ROS templates. 
 
 ## Assumption:
-1. The Ubuntu system is setup with ROS Kinetics 
+1. The Ubuntu system is setup with ROS Kinetics.
+2. The catkin workspace has been setup.
 
 Note : Curently the database has information about only 3 subjects: ENPM808X, ENPM662, CMSC440  
 

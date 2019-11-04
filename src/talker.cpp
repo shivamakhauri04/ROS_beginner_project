@@ -48,8 +48,8 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 * upon adding .srv to the package 
 * @return bool: if the service responses
 */
-bool callback(beginner_tutorials :: exampleServiceMessageRequest& request,
-beginner_tutorials :: exampleServiceMessageResponse& response) {
+bool callback(beginner_tutorials :: exampleServiceMessageRequest &request,
+beginner_tutorials :: exampleServiceMessageResponse &response) {
   ROS_INFO("callback activated");
   // convert the client data to a C++-class string, to use member funcs
   std::string in_name(request.subject);
