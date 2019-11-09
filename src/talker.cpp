@@ -41,24 +41,27 @@ std::string turtle_name;
 * between the robot frames and world frame 
 */
 
-void poseCallback(const turtlesim::PoseConstPtr& msg){
+void  poseCallback(const turtlesim::PoseConstPtr& msg){
   // create transform broadcaster to publish the transformations
   static tf::TransformBroadcaster br;
   tf::Transform transform;
   // set the origin
   transform.setOrigin( tf::Vector3(msg->x, msg->y, 0.0) );
   tf::Quaternion q;
-  q.setRPY(0, 0, msg->theta);
+  q.setRPY(0.0, 0.0, msg->theta);
   // set the rotations
   transform.setRotation(q);
   // send the calculated transform
   br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", turtle_name));
 }
 
+
 int main(int argc, char** argv){
   // create the node
-  ros::init(argc, argv, "Talk_with_parent_world");
-  if (argc != 2){ROS_ERROR("need turtle name as argument"); return -1;};
+  ros::init(argc, argv, "talkWithParentWorld");
+  if (!ros::isInitialized()) {
+    ROS_FATAL_STREAM("The Ros node for tf broadcaster not initialized");
+  }
   turtle_name = argv[1];
   // create the node handle
   ros::NodeHandle node;

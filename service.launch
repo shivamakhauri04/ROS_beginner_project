@@ -7,7 +7,7 @@
     <param name="scale_linear" value="2" type="double"/>
     <param name="scale_angular" value="2" type="double"/>
 
-    <node pkg="beginner_tutorials" type="talker" args="/turtle1" name="Talk_with_parent_world1" />
-    <node pkg="beginner_tutorials" type="talker" args="/turtle2" name="Talk_with_parent_world2" />
+    <node pkg="beginner_tutorials" type="talker" args="/turtle1" name="talkWithParentWorld1" />
+    <node pkg="beginner_tutorials" type="talker" args="/turtle2" name="talkWithParentWorld2" />
 
 </launch>

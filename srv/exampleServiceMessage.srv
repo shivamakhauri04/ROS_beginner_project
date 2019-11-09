@@ -1,7 +1,0 @@
-string subject
----
-bool onList
-bool roboticsCourse
-int32 credits
-string subjectName
-
