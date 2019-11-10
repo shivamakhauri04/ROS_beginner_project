@@ -4,7 +4,6 @@ project(beginner_tutorials)
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS tf roscpp rospy std_msgs genmsg message_generation)
 
-## add_service_files(FILES talkWithParentWorld.srv)
 
 ## Generate added messages and services
 generate_messages(DEPENDENCIES std_msgs)

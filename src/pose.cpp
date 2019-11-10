@@ -29,9 +29,7 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
-#include <turtlesim/Pose.h>
 
-std::string turtle_name;
 /**
 * @brief function poseCallback
 * @param const turtlesim::PoseConstPtr&
@@ -40,18 +38,15 @@ std::string turtle_name;
 * between the robot frames and world frame 
 */ 
 
-void poseCallback(const turtlesim::PoseConstPtr& msg){
-  
-  // create transform broadcaster to publish the transformations
-  static tf::TransformBroadcaster br;
+tf::Transform poseCallback(float x,float y,float z,float theta1,float theta2,float theta3){ 
   tf::Transform transform;
   // set the origin
-  transform.setOrigin( tf::Vector3(msg->x, msg->y, 0.0) );
+  transform.setOrigin(tf::Vector3(x, y, z));
+  // store quaterion in q
   tf::Quaternion q;
-  q.setRPY(0.0, 0.0, msg->theta);
+  q.setRPY(theta1,theta2,theta3);
   // set the rotations
   transform.setRotation(q);
   // send the calculated transform
-  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", turtle_name));
-  // return (xCoordinate);
+  return transform;
 }

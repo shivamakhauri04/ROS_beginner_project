@@ -29,23 +29,28 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
-#include <turtlesim/Pose.h>
 #include "pose.cpp"
 
 
 
 int main(int argc, char** argv){
   // create the node
-  ros::init(argc, argv, "talkWithParentWorld");
+  ros::init(argc, argv, "talker");
   if (!ros::isInitialized()) {
     ROS_FATAL_STREAM("The Ros node for tf broadcaster not initialized");
   }
-  turtle_name = argv[1];
   // create the node handle
   ros::NodeHandle node;
-  // call the broadcaster to calculate transform between the frames
-  ros::Subscriber sub = node.subscribe(turtle_name+"/pose", 10, &poseCallback);
-  ros::spin();
+  // create transform broadcaster to publish the transformations
+  static tf::TransformBroadcaster br;
+  tf::Transform transform;
+  while (ros::ok()) {
+    // function call
+    transform = poseCallback(2,43,4,180,20,70);
+    // broadcast the transformations
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+    ros::spinOnce();
+  }
   return 0;
 };
 
