@@ -23,8 +23,8 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 * @author Shivam Akhauri 
 * @date 7 November 2019
 * @copyright 2019 Shivam Akhauri
-* @brief Contains the service to check for the details of a subject 
-* in the subject database of University of Maryland
+* @brief Contains the tf broadcaster 
+* to calculate frame transformations
 */
 
 #include <ros/ros.h>

@@ -24,21 +24,35 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 
+/**
+* @file listener.cpp
+* @author Shivam Akhauri 
+* @date 7 November 2019
+* @copyright 2019 Shivam Akhauri
+* @brief Contains the tf leistener 
+* to receive frame transformations
+*/
 int main(int argc, char **argv) {
     ros::init(argc, argv, "tf_listener");
 
-
+    // create listener object
     tf::TransformListener listener;
+    // create node
     ros::NodeHandle node;
+    // set listener rate
     ros::Rate rate(10);
     while (ros::ok()) {
         tf::StampedTransform transform;
         try {
+            // receive frame transformation
+            // between world and talk farmes
             listener.lookupTransform("/world", "/talk",
                                    ros::Time(0), transform);
+            // print the transformation origins
             std::cout << "x: " << transform.getOrigin().x() << " y: "
                             << transform.getOrigin().y() << " z: "
                             << transform.getOrigin().z() << std::endl;
+            // print the transformation quaternion
             std::cout << "Quaternion: " << transform.getRotation().x() << ", "
                                     << transform.getRotation().y() << ", "
                                     << transform.getRotation().z() << ", "

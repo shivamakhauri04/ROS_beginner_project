@@ -25,10 +25,26 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 #include <tf/transform_broadcaster.h>
 #include "std_msgs/String.h"
 
+/**
+* @file test/talker.cpp
+* @author Shivam Akhauri 
+* @date 7 November 2019
+* @copyright 2019 Shivam Akhauri
+* @brief Creates a callback function for unit 
+* testing TF_broadcaster topic 
+*/
 void testCallback(const std_msgs::String::ConstPtr& msg) {
     ROS_INFO("Level 2 test hearing: [%s].Test successful", msg->data.c_str());
 }
 
+/**
+* @file test/talker.cpp
+* @author Shivam Akhauri 
+* @date 7 November 2019
+* @copyright 2019 Shivam Akhauri
+* @brief Contains the unit test for tf 
+* broadcaster Topic existance 
+*/
 TEST(TESTSuite, testTFTopicTransformationExistance) {
   ros::NodeHandle node;
   ros::Subscriber sub = node.subscribe("chatter", 1000, testCallback);
