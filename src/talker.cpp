@@ -30,7 +30,7 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
 #include "pose.cpp"
-
+#include "std_msgs/String.h"
 
 
 int main(int argc, char** argv){
@@ -41,6 +41,7 @@ int main(int argc, char** argv){
   }
   // create the node handle
   ros::NodeHandle node;
+  ros::Publisher chatter_pub = node.advertise<std_msgs::String>("chatter", 1000);
   // create transform broadcaster to publish the transformations
   static tf::TransformBroadcaster br;
   tf::Transform transform;

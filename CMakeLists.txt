@@ -27,7 +27,7 @@ if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
 
   add_rostest_gtest(
-  talkWithParentWorldClient service.launch test/talker.cpp)
-  target_link_libraries(talkWithParentWorldClient ${catkin_LIBRARIES})
-  add_dependencies(talkWithParentWorldClient talkWithParentWorld ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+  tf_talker test/talker.launch test/talker.cpp)
+  target_link_libraries(tf_talker ${catkin_LIBRARIES})
+  add_dependencies(tf_talker talkWithParentWorld ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 endif()
