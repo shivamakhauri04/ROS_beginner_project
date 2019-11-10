@@ -30,25 +30,27 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 * @author Shivam Akhauri 
 * @date 7 November 2019
 * @copyright 2019 Shivam Akhauri
+* @brief unit test for the tf_broadcaster
+*/
+
+/**
+* @param const std_msgs::String::ConstPtr&
+* @return none
 * @brief Creates a callback function for unit 
-* testing TF_broadcaster topic 
+* testing TF_broadcaster topic  
 */
 void testCallback(const std_msgs::String::ConstPtr& msg) {
     ROS_INFO("Level 2 test hearing: [%s].Test successful", msg->data.c_str());
 }
 
-/**
-* @file test/talker.cpp
-* @author Shivam Akhauri 
-* @date 7 November 2019
-* @copyright 2019 Shivam Akhauri
-* @brief Contains the unit test for tf 
-* broadcaster Topic existance 
-*/
+
 TEST(TESTSuite, testTFTopicTransformationExistance) {
   ros::NodeHandle node;
+  // call the suscriber
   ros::Subscriber sub = node.subscribe("chatter", 1000, testCallback);
+  // test for existence of the suscriber
   bool exists(sub);
+  // test condition
   EXPECT_TRUE(exists);
 }
 

@@ -32,10 +32,9 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 #include "std_msgs/String.h"
 
 /**
-* @brief function poseCallback
 * @param const turtlesim::PoseConstPtr&
 * @return none
-* calculates the robot frame transformations 
+* @brief calculates the robot frame transformations 
 * between the robot frames and world frame 
 */ 
 
