@@ -17,7 +17,7 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+**/
 /**
 * @file talker.cpp
 * @author Shivam Akhauri 
@@ -29,11 +29,31 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
-#include "pose.cpp"
 #include "std_msgs/String.h"
 
+/**
+* @brief function poseCallback
+* @param const turtlesim::PoseConstPtr&
+* @return none
+* calculates the robot frame transformations 
+* between the robot frames and world frame 
+*/ 
 
-int main(int argc, char** argv){
+tf::Transform poseCallback(float x, float y, float z,
+float theta1, float theta2, float theta3) {
+  tf::Transform transform;
+  // set the origin
+  transform.setOrigin(tf::Vector3(x, y, z));
+  // store quaterion in q
+  tf::Quaternion q;
+  q.setRPY(theta1, theta2, theta3);
+  // set the rotations
+  transform.setRotation(q);
+  // send the calculated transform
+  return transform;
+}
+
+int main(int argc, char** argv) {
   // create the node
   ros::init(argc, argv, "talker");
   if (!ros::isInitialized()) {
@@ -41,19 +61,21 @@ int main(int argc, char** argv){
   }
   // create the node handle
   ros::NodeHandle node;
-  ros::Publisher chatter_pub = node.advertise<std_msgs::String>("chatter", 1000);
+  ros::Publisher chatter_pub = node.advertise
+  <std_msgs::String>("chatter", 1000);
   // create transform broadcaster to publish the transformations
   static tf::TransformBroadcaster br;
   tf::Transform transform;
   while (ros::ok()) {
     // function call
-    transform = poseCallback(2,43,4,180,20,70);
+    transform = poseCallback(2, 43, 4, 180, 20, 70);
     // broadcast the transformations
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+    br.sendTransform(tf::StampedTransform
+    (transform, ros::Time::now(), "world", "talk"));
     ros::spinOnce();
   }
   return 0;
-};
+}
 
 
 
