@@ -2,12 +2,15 @@
 #include <ros/service_client.h>
 #include <gtest/gtest.h>
 #include <tf/transform_broadcaster.h>
-#include "/home/shivam/catkin_ws/src/beginner_tutorials/src/talker.cpp"
+#include "../src/pose.cpp"
 
 
 TEST(TESTSuite, testTFbroadcaster)
 {
-  EXPECT_TRUE(&poseCallback);
+  ros::NodeHandle node;
+  ros::Subscriber sub = node.subscribe("/turtle1/pose", 10, &poseCallback);
+  bool exists(sub);
+  EXPECT_TRUE(exists);
 }
 
 int main(int argc, char **argv){

@@ -30,24 +30,28 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
 #include <turtlesim/Pose.h>
-#include "pose.cpp"
 
+std::string turtle_name;
+/**
+* @brief function poseCallback
+* @param const turtlesim::PoseConstPtr&
+* @return none
+* calculates the robot frame transformations 
+* between the robot frames and world frame 
+*/ 
 
-
-int main(int argc, char** argv){
-  // create the node
-  ros::init(argc, argv, "talkWithParentWorld");
-  if (!ros::isInitialized()) {
-    ROS_FATAL_STREAM("The Ros node for tf broadcaster not initialized");
-  }
-  turtle_name = argv[1];
-  // create the node handle
-  ros::NodeHandle node;
-  // call the broadcaster to calculate transform between the frames
-  ros::Subscriber sub = node.subscribe(turtle_name+"/pose", 10, &poseCallback);
-  ros::spin();
-  return 0;
-};
-
-
-
+void poseCallback(const turtlesim::PoseConstPtr& msg){
+  
+  // create transform broadcaster to publish the transformations
+  static tf::TransformBroadcaster br;
+  tf::Transform transform;
+  // set the origin
+  transform.setOrigin( tf::Vector3(msg->x, msg->y, 0.0) );
+  tf::Quaternion q;
+  q.setRPY(0.0, 0.0, msg->theta);
+  // set the rotations
+  transform.setRotation(q);
+  // send the calculated transform
+  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", turtle_name));
+  // return (xCoordinate);
+}
